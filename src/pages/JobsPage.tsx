@@ -50,9 +50,10 @@ const handleDragEnd = async (event: any) => {
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('')
     const [page, setPage] = useState(1)
+    const [location, setLocation] = useState('')
     const pageSize = 5
 
-    const { data, isLoading, error, refetch } = useJobs({ search, status, page, pageSize })
+    const { data, isLoading, error, refetch } = useJobs({ search, status, location, page, pageSize })
 
     async function handleSaveJob(jobData: Partial<Job> & { id?: string }) {
         if (jobData.id) {
@@ -81,6 +82,16 @@ const handleDragEnd = async (event: any) => {
                     }}
                     placeholder="Search jobs..."
                     className="border p-2 rounded w-64"
+                />
+                <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => {
+                        setPage(1)
+                        setLocation(e.target.value)
+                    }}
+                    placeholder="Filter by location..."
+                    className="border p-2 rounded w-56"
                 />
                 <select
                     value={status}

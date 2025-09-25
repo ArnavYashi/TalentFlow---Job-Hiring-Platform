@@ -30,7 +30,7 @@ export  function SortableJob({ job, handleSaveJob }: SortableJobProps) {
     >
       <div>
         <div className="font-medium">{job.title}</div>
-        <div className="text-sm text-gray-500">{job.status}</div>
+        <div className="text-sm text-gray-500">{job.status}{job.location ? ` • ${job.location}` : ''}</div>
         <div className="text-xs text-gray-400">Slug: {job.slug}</div>
       </div>
       <div className="flex gap-2 items-center">

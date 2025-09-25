@@ -8,8 +8,9 @@ async function prepare() {
   if (import.meta.env.DEV) {
     const { worker } = await import('./mocks/browser')
     await worker.start()
-    const { seedIfEmpty } = await import('./mocks/seed')
+    const { seedIfEmpty, backfillJobLocationsIfMissing } = await import('./mocks/seed')
     await seedIfEmpty()
+    await backfillJobLocationsIfMissing()
   }
 }
 

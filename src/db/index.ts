@@ -11,6 +11,7 @@ export interface Job {
   order: number
   createdAt: number
   updatedAt?: number
+  location?: string
 }
 
 export interface Candidate {

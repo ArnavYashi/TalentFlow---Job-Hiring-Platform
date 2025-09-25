@@ -21,6 +21,7 @@ export async function seedIfEmpty() {
       slug: faker.helpers.slugify(faker.company.name() + '-' + i),
       status: Math.random() < 0.8 ? 'active' as any : 'archived' as any,
       tags: faker.helpers.arrayElements(['frontend','backend','devops','product','design','QA'], Math.ceil(Math.random()*3)),
+      location: faker.helpers.arrayElement(['Remote','New York, NY','San Francisco, CA','London, UK','Berlin, DE','Bengaluru, IN']),
       order: i,
       createdAt: Date.now()
     }
@@ -59,4 +60,16 @@ export async function seedIfEmpty() {
     updatedAt: Date.now()
   }))
   await db.assessments.bulkAdd(assessments)
+}
+
+export async function backfillJobLocationsIfMissing() {
+  const jobs = await db.jobs.toArray()
+  const withNoLocation = jobs.filter((j: any) => !('location' in j) || !j.location)
+  if (withNoLocation.length === 0) return
+  const locations = ['Remote','New York, NY','San Francisco, CA','London, UK','Berlin, DE','Bengaluru, IN']
+  for (const job of withNoLocation) {
+    const loc = locations[Math.floor(Math.random() * locations.length)]
+    await db.jobs.update(job.id, { location: loc })
+  }
+  console.log(`[Seed] Backfilled locations for ${withNoLocation.length} jobs`)
 }

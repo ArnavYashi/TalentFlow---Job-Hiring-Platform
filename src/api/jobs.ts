@@ -15,18 +15,19 @@ export interface Job {
   location?: string
 }
 
-type UseJobsParams = { search?: string; status?: string; page?: number; pageSize?: number }
+type UseJobsParams = { search?: string; status?: string; location?: string; page?: number; pageSize?: number }
 
 /** Query hook for jobs (server-like) */
 export function useJobs(params: UseJobsParams) {
-  const { search = '', status = '', page = 1, pageSize = 10 } = params
+  const { search = '', status = '', location = '', page = 1, pageSize = 10 } = params
 
   return useQuery({
-    queryKey: ['jobs', search, status, page, pageSize],
+    queryKey: ['jobs', search, status, location, page, pageSize],
     queryFn: async () => {
       const qs = new URLSearchParams({
         search,
         status,
+        location,
         page: String(page),
         pageSize: String(pageSize),
       })

@@ -18,6 +18,7 @@ export const handlers = [
     const url = new URL(request.url)
     const search = url.searchParams.get('search') || ''
     const status = url.searchParams.get('status') || ''
+    const location = url.searchParams.get('location') || ''
     const page = parseInt(url.searchParams.get('page') || '1')
     const pageSize = parseInt(url.searchParams.get('pageSize') || '10')
 
@@ -32,6 +33,7 @@ export const handlers = [
       )
     }
     if (status) jobs = jobs.filter(j => j.status === status)
+    if (location) jobs = jobs.filter(j => (j as any).location?.toLowerCase().includes(location.toLowerCase()))
 
     // simple sort by order
     jobs = jobs.sort((a, b) => a.order - b.order)
@@ -49,6 +51,7 @@ export const handlers = [
       slug: string
       tags?: string[]
       order?: number
+      location?: string
     } | null
 
     if (maybeFail(true))
@@ -63,6 +66,7 @@ export const handlers = [
       slug: body?.slug ?? '',
       status: 'active' as JobStatus,
       tags: body?.tags ?? [],
+      location: body?.location ?? 'Remote',
       order: body?.order ?? Date.now(),
       createdAt: Date.now(),
     }
@@ -83,6 +87,7 @@ export const handlers = [
       status: JobStatus
       tags: string[]
       order: number
+      location?: string
     }>
 
     const job = await db.jobs.get(id as string)
