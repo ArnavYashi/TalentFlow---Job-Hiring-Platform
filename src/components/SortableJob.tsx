@@ -3,6 +3,8 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import JobModal from './JobModal'
 import type { Job } from '../api/jobs'
+import { Link, useNavigate } from 'react-router-dom'
+
 
 interface SortableJobProps {
   job: Job
@@ -10,6 +12,7 @@ interface SortableJobProps {
 }
 
 export  function SortableJob({ job, handleSaveJob }: SortableJobProps) {
+    const navigate = useNavigate();
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: job.id })
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -32,6 +35,10 @@ export  function SortableJob({ job, handleSaveJob }: SortableJobProps) {
       </div>
       <div className="flex gap-2 items-center">
         <div className="text-sm text-gray-600">Tags: {(job.tags || []).join(', ')}</div>
+        <button style={{backgroundColor: 'darkgreen'}}  onClick={() => navigate(`/jobs/${job.id}/assessment`)}>
+  Assessment
+</button>
+    
         <JobModal job={job} onSave={handleSaveJob} />
         <button
           onClick={async () => {

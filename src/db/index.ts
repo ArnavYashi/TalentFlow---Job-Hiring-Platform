@@ -39,6 +39,7 @@ export class TalentDB extends Dexie {
 
   constructor() {
     super('talentflow-db')
+    console.log('[Dexie] Initializing DB talentflow-db')
     this.version(1).stores({
       jobs: 'id,slug,title,order,status',
       candidates: 'id,name,email,jobId,stage',

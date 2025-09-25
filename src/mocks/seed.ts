@@ -5,7 +5,12 @@ import { v4 as uuid } from 'uuid'
 
 export async function seedIfEmpty() {
   const jobsCount = await db.jobs.count()
-  if (jobsCount > 0) return
+  const candidatesCount = await db.candidates.count()
+  if (jobsCount > 0 || candidatesCount > 0) {
+    console.log('[Seed] DB already seeded:', { jobsCount, candidatesCount })
+    return
+  }
+  console.log('[Seed] Seeding DB with jobs and candidates')
 
   // 25 jobs
   const jobs = Array.from({length:25}).map((_,i) => {

@@ -7,7 +7,7 @@ import './index.css'
 async function prepare() {
   if (import.meta.env.DEV) {
     const { worker } = await import('./mocks/browser')
-    await worker.start({ onUnhandledRequest: 'bypass' })
+    await worker.start()
     const { seedIfEmpty } = await import('./mocks/seed')
     await seedIfEmpty()
   }
