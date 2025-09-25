@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useCandidates } from '../api/candidates' // create this hook similar to useJobs
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useNavigate } from 'react-router-dom'
@@ -54,6 +54,8 @@ export default function CandidatesPage() {
             </div>
 
             {/* Virtualized list */}
+            {isLoading && <div>Loading...</div>}
+            {error && <div className="text-red-500">Failed to load candidates</div>}
             <div
                 ref={parentRef}
                 className="h-[600px] overflow-auto border rounded"
@@ -68,6 +70,7 @@ export default function CandidatesPage() {
                         return (
                             <div
                                 key={candidate.id}
+                                data-index={virtualRow.index}
                                 ref={rowVirtualizer.measureElement} // essential for virtualization
                                 style={{
                                     position: 'absolute',
